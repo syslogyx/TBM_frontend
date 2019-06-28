@@ -1,0 +1,207 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Reports
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/machine-list"><i class="fa fa-dashboard"></i> Machine List</a></li>
+        <li ><a href="/machine/view?id={{partDtls.id}}">Machine Reports</a></li>
+        <li class="active">View Part</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content" id="render_me">
+
+    <!-- Default box -->
+    <div class="cbox">
+        <div class="box-header with-border" style="margin: 5px 0px 10px; text-align: center; ">
+            <h3 class="box-title" style="color: orange;font-weight: bold;">
+                View Machines Part History
+            </h3>
+        </div>
+        <div class="col-md-12">
+            <div class="box box-solid">
+                <div class="box-header with-border bg-gray">
+                    <h3 class="box-title">Machine & it's Part Details</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="departments">Department:</label>
+                                <span>
+                                        {{partDtls.department}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="machineName">Machine Name:</label>
+                                <span>
+                                        {{partDtls.machine_name}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="dcdLinkedIp">DCD Linked IP:</label>
+                                <span>
+                                        {{partDtls.dcd_linked_ip}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="partName">Part Name:</label>
+                                <span style="color: #3c8dbc;"><b>
+                                        {{partDtls.parts[0].spare_part_name}}
+                                </b></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="departments">Button Press Count:</label>
+                                <span class="green"><b>
+                                        {{partDtls.current_count}}
+                                </b></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="status">Status:</label>
+                                <span>
+                                        {{partDtls.status}}
+                                </span>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="row">   
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="definedLife" class="green">Defined Life:</label>
+                                <span class="green"><b>
+                                        {{partDtls.parts[0].life}}
+                                </b></span>
+                            </div>
+                        </div>                     
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="balancedLife">Balanced Life:</label>
+                                <span class="green"><b>
+                                         {{partDtls.parts[0].final_life - partDtls.parts[0].life_exhausted_till_date}}
+                                </b></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label" for="srno">Sr. No:</label>
+                                <b>
+                                <span class="orange">
+                                    {{sr}}
+                                </span>
+                                <span> {{'/'}} </span>
+                                <span class="red">
+                                    {{length}}
+                                </span>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div> 
+        <!-- <div class="col-md-12"> 
+            <div class="col-md-6 text-left">           
+                <a href="" class=" text-left btn btn-primary">Previous</a>
+            </div>
+           
+            <div class="col-md-6 text-right">
+                <a href="" class="btn btn-primary text-left">Next</a>
+            </div>
+        </div> -->
+        <div class="col-md-12" >
+            <div class="box box-solid">
+                <div class="box-header with-border bg-gray">
+                    <h3 class="box-title">Part's History:</h3>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive">
+                <table class="table table-bordered">
+                <thead>
+                    <tr style="background-color: #ccc;">
+                        <!-- <th rowspan="3">pre</th> -->
+                        <th class="text-center">Sr. No.</th>
+                        <th class="text-center">Date</th>
+                        <th class="text-center">Count</th>
+                        <th class="text-center">Activity Details</th>  
+                        <!-- <th rowspan="3">next</th>                       -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr rowspan="1">
+                        <td >pre</td>
+                    </tr> -->
+                   <!--  <tr ng-repeat-start="(key, val) in partDtls.part_history">
+                        <td rowspan="{{val.length}}">{{key}}</td>
+                        <td>{{val[0]}}</td>
+                    </tr> -->
+                    <tr ng-repeat="p in partDtls.part_history">
+                        <!-- <td rowspan="{{partDtls.part_history.length}}">PRe</td> -->
+                        <td class="text-center">{{$index +1}}</td>
+                        <td class="text-center">{{p.added_on}}</td>
+                        <!-- <td class="text-center">{{date}}</td> -->
+                        <td class="text-center">{{p.life_exhausted_till_date}}</td>
+                        <td class="text-center">{{p.activity_details}}</td>
+                    </tr>
+                    <tr ng-if="partDtls.part_history == '' ">
+                        <td colspan='5' style='text-align:center;'>No Data Found</td>
+                    </tr>
+                    <!-- <tr rowspan="1">
+                        <td >next</td>
+                    </tr> -->
+                </tbody>
+                </table>
+                </div> 
+              <!--   <div>{{parts |json}}</div>    -->
+            </div>
+            <!-- /.box -->
+        </div> 
+         <div class="col-md-12"> 
+            <div class="col-md-6 col-xs-6 text-left">           
+                <button class=" text-left btn btn-primary" ng-click = "previousPart()" ng-disabled="sr==1">Previous</button>
+            </div>
+           
+            <div class="col-md-6 col-xs-6 text-right">
+                <button ng-click = "nextPart()" class="btn btn-primary text-left" ng-disabled="sr==(machine.parts.length)">Next</button>
+            </div>
+        </div>
+       <!--  <div ng-swipe-left="nextStory()" ng-swipe-right="previousStory()" >
+            {{pid}}
+        </div> -->
+        
+        <div class="col-md-12 text-center" style="padding-top:35px;">           
+            <a href="/machine/view?id={{partDtls.id}}" class="btn btn-success text-center">Back</a>
+            <a style="cursor:pointer" class="pdf btn btn-success text-center" ng-click="downloadPdf($event)" >Save Pdf</a>
+            <a style="cursor:pointer" class="btn btn-success text-center" ng-click="saveExcel($event)" >Save Excel</a>
+        </div>
+        
+        <!--</div>-->
+    </div>
+    <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+<script>
+
+            $("[data-toggle=tab]").click(function (e) {
+                e.preventDefault();
+            })
+</script>

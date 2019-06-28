@@ -1,0 +1,52 @@
+<div ng-repeat="tr in machineList">
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12" style="margin-bottom: 15px;">
+        <a href="/machine/view?id={{tr.id}}">
+            <span class="info-box-history pull-right">
+                <b>History</b>
+            </span>
+        </a>
+        <!-- <div class="info-box"  ng-class="tr.status == 'OFF' ? 'bf-red' : 'bf-green' || tr.status == 'ON' ? 'bf-green' : 'bf-orange'" style="margin-bottom: 0px;">
+ -->    
+        <div class="info-box"  ng-class="changeColor(tr.status,tr.alert_details)" style="margin-bottom: 0px;">
+        <div class="info-box-content" style="margin-left: 0px;">
+                <span class="info-box-text"><b>{{tr.machine_name}}</b></span>
+                 <div class="icon"> 
+                    <span class="status-info" style="font-size: 12px;">
+                        {{tr.department}} <!--     {{'80%'}}
+                        <i class="ion ion-pie-graph"></i>-->
+                    </span>    
+               
+                    <span class="progress-description">
+                        {{tr.alert_details}} <!--     {{'80%'}}
+                        <i class="ion ion-pie-graph"></i>-->
+                    </span>  
+                </div>
+            </div>
+                                            
+        </div>
+        <div class="machine-image">
+            <strong><p class="" ng-class="changeTextColor(tr.status,tr.alert_details)" style="padding-top: 10px; padding-left: 10px;">{{tr.status}}</p></strong>
+            <div style="padding-top: 150px; padding-left: 10px;" class="">
+            <b><p class="" style="font-size: 12px;" ng-class="changeTextColor(tr.status,tr.alert_details)" >Button Press Count <br>{{tr.current_count}}</p></b>
+           
+                
+            </div>
+            <!-- <img src="../resources/img/machine.jpg" alt="machine"/> -->
+        </div>
+        <div class="action-box col-md-12">   
+            <a style="cursor:pointer" ng-click="showEmailPopUp($event, $index)">
+                <div class="col-md-3 col-sm-3 col-xs-3"  data-toggle='tooltip' title='Configure email'><i class="fa fa-envelope"></i></div>
+            </a>
+            <a href="/machine/view/details?id={{tr.id}}"   >
+                <div class="col-md-3 col-sm-3 col-xs-3" data-toggle='tooltip' title='View'><i class="fa fa-eye"></i>
+            </div>
+            </a>
+            <a href="/machine/update?id={{tr.id}}" >
+               <div class="col-md-3 col-sm-3 col-xs-3" data-toggle='tooltip' title='Edit'><i class="fa fa-pencil-square-o"></i></div>
+            </a>
+            <a style="cursor:pointer" ng-click="delete($index)"  >
+                    <div class="col-md-3 col-sm-3 col-xs-3" data-toggle='tooltip' title='Delete'><i class="fa fa-trash-o"></i></div>
+            </a>
+        </div>
+    </div>     
+</div>

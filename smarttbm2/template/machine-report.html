@@ -1,0 +1,74 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Reports
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/machine-list"><i class="fa fa-dashboard"></i> Machine List</a></li>
+        <li class="active">Machine Reports</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="cbox">
+        <!-- 15/12/16 [added style align-text center to title]-->
+        <div class="box-header with-border" style="margin: 5px 0px 10px;text-align: center;">
+            <h3 class="box-title" style="color: orange;font-weight: bold;">Machine List</h3>
+           <!-- 15/12/16 [removed back button]-->
+           <!--  <div class="box-tools pull-right">
+                <a href="/machine-list" class="btn btn-success">Back</a>
+            </div> -->
+        </div>
+        <div class="col-md-12">
+             <div class="box-body table-responsive no-padding">
+            <table class="table table-bordered" style="margin-bottom: 30px;">
+                <thead>
+                    <tr style="background-color: #ccc;">
+                        <th class="text-center">Sr. No.</th>
+                        <th class="text-center">Machine Name</th>
+                        <th class="text-center">Department/Section</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Cycle Count</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="tr in machineList">
+                        <td class="text-center">{{$index +1}}</td>
+                        <td class="text-center">{{tr.machine_name}}</td>
+                        <td class="text-center">{{tr.department}}</td>
+                        <td class="text-center" ng-class="tr.status == 'OFF' ? 'red' : 'green'">{{tr.status}}</td>
+                        <td class="text-center">{{tr.current_count}}</td>
+                        <td class="text-center">
+                            <a href="/machine/view?id={{tr.id}}" data-toggle='tooltip' title='Open Report' class='btn btn-dropbox btn-sm' >&nbsp;Open&nbsp;</a>
+                        </td>
+                    </tr>
+                    <tr ng-if="machineList == '' ">
+                        <td colspan='6' style='text-align:center;'>No Data Found</td>
+                    </tr>
+                </tbody>
+            </table>              
+        </div>           
+            
+            <!-- /.box -->
+        </div> 
+         <div class="box-footer text-right">
+            <a href="/machine-list" class="btn btn-success">Back</a>
+        </div>
+        <!--</div>-->
+    </div>
+
+    <!-- /.box -->
+
+</section>
+<!-- /.content -->
+
+<script>
+
+            $("[data-toggle=tab]").click(function (e) {
+                e.preventDefault();
+            })
+</script>

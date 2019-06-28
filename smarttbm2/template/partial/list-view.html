@@ -1,0 +1,45 @@
+<table class="table" style="margin-bottom: 30px;">
+    <thead style="color: #616161;">
+        <tr style="background-color: #eeeeee;">
+            <th class="text-center">Sr. No.</th>
+            <th class="text-center">Machine Name</th>
+            <th class="text-center">Department/Section</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Status Info</th>
+            <th class="text-center">Button Press Count</th>
+            <th class="text-center">Action</th>
+            <th class="text-center">Details</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="tr in machineList" ng-class="tr.status == 'OFF' ? 'bf-red' : 'bf-green' || tr.status == 'ON' ? 'bf-green' : 'bf-orange'">
+            <td class="text-center">{{$index + 1}}</td>
+            <td class="text-center">{{tr.machine_name}}</td>
+            <td class="text-center">{{tr.department}}</td>
+            <td class="text-center">{{tr.status}}</td>
+            <td class="text-center">{{tr.alert_details}}</td>
+            <td class="text-center">{{tr.current_count}}</td>
+            <td class="text-center">
+                <a style="cursor:pointer" ng-click="showEmailPopUp($event, $index)" data-toggle='tooltip'  class='btn btn-color-orange btn-xs' title='Configure email'>
+                    &nbsp;<i class='fa fa-envelope'></i>&nbsp;
+                </a>
+                <a data-toggle='tooltip' title='View' class='btn btn-color-blue btn-xs' href="/machine/view/details?id={{tr.id}}">
+                    &nbsp;<i class='fa fa-eye'></i>&nbsp;
+                </a>
+                <a href="/machine/update?id={{tr.id}}" title='Edit' data-toggle='tooltip' class='btn btn-color-green btn-xs'>
+                    &nbsp;<i class='fa fa-pencil-square-o'></i>&nbsp;
+                </a>
+                <a style="cursor:pointer" title='Delete' data-toggle='tooltip' class='btn btn-color-red btn-xs' ng-click="delete($index)">
+                    &nbsp;<i class='fa fa-trash-o'></i>&nbsp;
+                </a>            
+            </td>
+            <td class="text-center">
+                <a data-toggle='tooltip' title='Open history' class='btn btn-dropbox btn-sm' href="/machine/view?id={{tr.id}}">History
+                </a>   
+            </td>
+        </tr>
+        <!-- <tr ng-if="machineList == '' ">
+            <td colspan='6' style='text-align:center;'>There are no machine configured yet. Please Add New Machine.</td>
+        </tr> -->
+    </tbody>
+</table>

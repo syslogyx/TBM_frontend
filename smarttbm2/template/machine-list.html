@@ -1,0 +1,130 @@
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border row" style="margin: 5px 0px 10px;">
+            <h3 class="box-title setMargin" style="color: orange;font-weight: bold;">Machine List</h3>
+
+            <div class=" pull-right">
+                <a class="btn btn-primary" ng-click="getMachineView('template/partial/list-view.html')" style="margin-bottom: 2px"><i class="fa fa-list" style="font-size: 19px;"></i></a>
+                <a class="btn btn-primary" ng-click="getMachineView('template/partial/grid-view.html')" style="margin-bottom: 2px"><i class="fa fa-th" style="font-size: 19px;"></i></a>
+                <a href="/add-machine" class="btn btn-primary " id="addmachine" style="margin-bottom: 2px">Add New Machine</a>
+                <a class="btn btn-success currentPage" style="display: none;" href="/machine-list" ></a>
+            </div>
+        </div>
+        <div class="box-body table-responsive no-padding">
+            <div ng-include="tpl"></div>            
+            
+            <!-- /.modal body -->
+            <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="border-bottom-color: #eee;">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                            <h4 class="modal-title" style="text-align: center"><b><span style="color: orange;text-transform:capitalize;"">{{machine_name}}'s Email</span></b>
+                            </h4>                            
+                        </div>
+                        <div class="modal-body">
+                            <div class="box-body"> 
+                            <form id="emailModalForm">                       
+                                <div class="row" ng-repeat="e in showEmail.recipient">
+                                    <div class="col-sm-12">
+                                        <div class="form-group"> 
+
+                                        <input type="email" name="email_{{$index}}}" ng-model="e.email" ng-change="hideErrorMessage()" placeholder="Please enter your Email_ID" id="email_{{$index}}}" class="form-control email distinctnames">                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="errrorMessage" class="hasError">
+                                            
+                                </div> 
+                            </form>                  
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top-color: #eee; text-align:center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Close&nbsp;</button>
+                            <button ng-click="saveEmail()" type="button" class="btn btn-primary">Save Email</button>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+            
+        <!-- /.box-body -->    
+
+            <div class="modal fade" id="noMachineFoundModal" tabindex="-1" role="dialog" aria-labelledby="noMachineFoundModalLabel" aria-hidden="true"  backdrop = "false",>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="box-body"> 
+                               <div style="text-align:center">
+                                    There are no machine configured yet.<br>
+                                    Please add New Machine. <br>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="border-top-color: #eee; text-align:center">
+                            <!-- <button type="button" id="btnClose" style="display: none" class="btn btn-default" data-dismiss="modal">&nbsp;Close&nbsp;</button>
+                            <a href="/add-machine" class="btn btn-primary">Add New Machine</a> -->
+                            <button type="button" class="btn btn-primary" ng-click="addNewMachine()">Add New Machine</button> 
+                        </div>
+                    </div>
+                </div>
+            </div>     
+            
+        </div>
+        <!-- /.box-body -->
+<!--        <div class="box-footer text-right">
+            <a href="/add-machine" class="btn btn-success">Add new machine</a>
+        </div>-->
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+</section>
+<!-- /.content -->
+<script type="text/javascript">
+
+    $("[data-toggle=tab]").click(function (e) {
+                e.preventDefault();
+    })
+
+    $.validator.addMethod("notEqualToGroup", function (value, element, options) {
+        // get all the elements passed here with the same class
+            var elems = $(element).parents('form').find(options[0]);
+        // the value of the current element
+            var valueToCompare = angular.lowercase(value);
+        // count
+            var matchesFound = 0;
+        // loop each element and compare its value with the current value
+        // and increase the count every time we find one
+            jQuery.each(elems, function () {
+                thisVal = angular.lowercase($(this).val());
+                if (thisVal == valueToCompare) {
+                        matchesFound++;
+                }
+            });
+        // count should be either 0 or 1 max
+            if (this.optional(element) || matchesFound <= 1) {
+                //elems.removeClass('error');
+                return true;
+            } else {
+                //elems.addClass('error');
+            }
+    }, "Please enter a Unique Value.");
+
+    var $showEmailPopup = $('#emailModalForm');
+
+    function validateEmailForm() {
+                $showEmailPopup.validate({
+                    rules: {
+                        }
+                });        
+        
+               $.validator.addClassRules(
+                           "email", //your class name
+                           { notEqualToGroup: ['.distinctnames'] }
+                         );        
+    }
+    validateEmailForm();
+</script>

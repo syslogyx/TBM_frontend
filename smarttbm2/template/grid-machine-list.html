@@ -1,0 +1,103 @@
+<!--Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border" style="margin: 5px 0px 10px;">
+            <h3 class="box-title" style="color: orange;font-weight: bold;">Machine list</h3>
+
+            <div class="box-tools pull-right">
+                <a class="btn btn-primary"><i class="fa fa-list"></i></a>
+                <a class="btn btn-primary"><i class="fa fa-th"></i></a>
+                <!-- <a class="btn btn-primary" ng-include="showList()"><i class="fa fa-list"></i></a>
+                <a class="btn btn-primary" ng-include="showGrid()"><i class="fa fa-th"></i></a> -->
+                <a href="/add-machine" class="btn btn-primary">Add new machine</a>
+                <a class="btn btn-success currentPage" style="display: none;" href="/machine-list"></a>
+            </div>
+        </div>
+        <div class="box-body with-border col-md-12">
+            <div ng-repeat="tr in machineList">
+                <div class="col-md-3 col-sm-6 col-xs-12" style="margin-bottom: 15px;">
+                    <a href="/machine/view?id={{tr.id}}">
+                        <span class="info-box-history pull-right">
+                            History 
+                        </span>
+                    </a>
+                    <div class="info-box" ng-class="tr.status == 'OFF' ? 'bg-red' : 'bg-green'" style="margin-bottom: 0px;">
+                        <div class="info-box-content" style="margin-left: 0px;">
+                            <span class="info-box-text"><b>{{tr.machine_name}}</b></span>
+                        </div>
+                        <div class="info-box-content" style="margin-left: 0px;"> 
+                            <div class="icon"> 
+                                <span class="progress-description">
+                                    Remaining Life - {{'80%'}}
+                                        <i class="ion ion-pie-graph"></i>
+                                </span>  
+                            </div>
+                        </div>                                       
+                    </div>
+                    <div class="machine-image">
+                        <p class="info-box-text" style="padding-top: 10px; padding-left: 10px;">{{tr.status}}</p>
+                        <!-- <img src="../resources/img/machine.jpg" alt="machine"/> -->
+                    </div>
+                    <div class="action-box col-md-12">   
+                        <div class="col-md-3 col-xs-2">                  
+                            <button ng-click="showEmailPopUp($event, $index)"><i class="fa fa-envelope"></i>&nbsp;</button>
+                        </div>
+                        <div class="col-md-3 col-xs-2">
+                            <button><a href="/machine/view/details?id={{tr.id}}">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            </button>
+                        </div>
+                        <div class="col-md-3 col-xs-2">
+                            <button><a href="/machine/update?id={{tr.id}}">
+                                <i class="fa fa-pencil-square-o"></i>
+                            </a></button>
+                        </div>
+                        <div class="col-md-3 col-xs-2">
+                            <button type="button" ng-click="delete($index)">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header" style="border-bottom-color: #eee;">
+                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <h4 class="modal-title" id="myModalLabel" style="text-align: center">Email</h4>
+                                </div>
+                            <div class="modal-body">
+                                <div class="box-body"> 
+                                    <div class="row" ng-repeat="e in showEmail.recipient">
+                                        <div class="col-sm-12">
+                                            <div class="form-group"> 
+                                                <input type="email" name="email[]" ng-model="e.email" placeholder="Please enter your email" id="email_{{$index}}}" class="form-control">           
+                                            </div>
+                                        </div>
+                                    </div>                   
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border-top-color: #eee; text-align:center">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">&nbsp;Close&nbsp;</button>
+                                <button ng-click="saveEmail()" type="button" class="btn btn-primary">Save</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>    
+                </div>     
+            </div>
+        </div>
+        <!-- <div>
+            {{machineList|json}}
+        </div> -->
+        <!-- /.box-body -->
+        <div class="box-footer text-right">
+        </div>
+        <!-- /.box-footer-->
+    </div>
+    <!-- /.box -->
+
+</section>
+<!-- /.content

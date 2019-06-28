@@ -1,0 +1,502 @@
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        {{title}}
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/machine-list"><i class="fa fa-dashboard"></i> Machine List</a></li>        
+        <li class="active">{{title}}</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="cbox">
+        <div class="text-right" style="margin: 0px 15px 10px 0px;">
+            <div class="btn-group alignBtn" id="reset_machine-div">
+                <button id="reset_machine" ng-click="resetMachine()" ng-disabled="machineParts.status == 'ON' || machineParts.current_count == 0" ng-show="id" class="btn  btn-warning sm" data-toggle='tooltip' title='Reset Machine'>Reset Machine</button>
+            </div>
+            <!-- <div class="btn-group" id="reset_machine-div">
+                <button id="reset_machine" ng-click="resetMachine()" ng-disabled="machineParts.status=='ON'" ng-show="id" class="btn btn-block btn-warning sm">Reset Machine</button>
+            </div> -->
+            <div class="btn-group alignBtn" id="off_on_machine-div">
+                <button id="off_on_machine" ng-model="status" ng-click="turnOffOrOntMachine()" ng-show="id" ng-class="machine_status == 'ON' ? 'btn btn-block btn-success sm' : 'btn btn-block btn-danger sm'" data-toggle='tooltip' title="{{machine_status=='ON' ? 'Turn Off Machine' : 'Turn On Machine'}}" >{{machine_status=="ON" ? 'Turn Off Machine' : 'Turn On Machine'}}</button>
+            </div>
+
+            <div class="btn-group alignBtn" id="replaceHW-div">
+                <button id="replaceHW" class="btn btn-primary sm" ng-show="id" data-toggle='tooltip' title='Replace Hardware' onclick="showReplaceHWModal()" >Replace Hardware</button>
+            </div>
+            <!-- <label class="switch"  style="font-weight: inherit;">
+                <input type="checkbox"  ng-checked="machineParts.status=='ON'"> -->
+            <!--  ng-class="machineParts.status=='OFF' ? 'unChecked' : 'checked'" -->
+            <!-- <div class="slider round" ng-click="turnOffOrOntMachine()" style="margin-bottom: -18px; margin-top: 18px;">
+                <div id="on_Machine" style="margin-top: 7px; margin-left: 6px; color:#fff" >{{machineParts.status}}</div>
+                <div id="off_Machine" style="margin-left: 32px; margin-top: -20px; "  >{{machineParts.status}}</div>
+            </div>
+        </label> -->
+        </div>
+        <form action="" id="createMachineForm"  >
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Machine Details:</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">                       
+                        <div class="row" ng-show="{{title == 'Create Machine'}}">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="departments">Department:</label>
+                                    <select class="form-control" name="departments" id="department" ng-model="machineParts.department" required="" >
+                                        <option value="">Select Department:</option>
+                                        <option ng-repeat="d in departments" value="{{d.department_name}}" ng-bind="d.department_name"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="departments">Enter Machine Name:</label>
+                                    <input type="text" ng-model="machineParts.machine_name" name="machine_name" id="machine_name" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="dcd_linked_ip">IP(DCD):</label>
+                                    <input type="text" class="form-control" ng-model="machineParts.dcd_linked_ip" id="dcd_linked_ip" name="dcd_linked_ip" placeholder="ex.172.16.1.91">
+                                </div> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="machines"><input type="checkbox" ng-model="checked" ng-click="getMachineList()"> Copy Existing Machine:</label>
+                                    <select class="form-control" name="machines" id="machines"  ng-change="setDataForCopyMachine(type);" ng-model="type" ng-disabled="!checked">
+                                        <option value="">Select Department:</option>
+                                        <option ng-repeat="m in machineList" ng-value="{{m.id}}" ng-bind="m.machine_name"></option>
+                                    </select>
+                                    {{this.value}}
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="row" ng-show="{{title == 'Update Machine'}}">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="departments">Department:</label>
+                                    <select class="form-control" name="departments" id="department" ng-model="machineParts.department" required="" >
+                                        <option value="">Select Department:</option>
+                                        <option ng-repeat="d in departments" value="{{d.department_name}}" ng-bind="d.department_name"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="departments">Enter Machine Name:</label>
+                                    <input type="text" ng-model="machineParts.machine_name" name="machine_name" id="machine_name" class="form-control" >
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="dcd_linked_ip">IP(DCD):</label>
+                                    <input type="text" class="form-control" ng-model="machineParts.dcd_linked_ip" id="dcd_linked_ip" name="dcd_linked_ip" placeholder="ex.172.16.1.91">
+                                </div> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="current_count">Button Press Count:</label>
+                                    <input type="text" class="form-control" ng-model="refresh_count" id="current_count" name="current_count" disabled="">
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div> 
+
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Add Spare Parts Details:</h3>
+                        <div class="box-tools">
+                            <a class="btn btn-primary btn-sm" data-toggle='tooltip' title='Add part'  ng-click="newPart()">Add </a>
+                            <a class="btn btn-primary btn-sm" data-toggle='tooltip' title='Remove part'  ng-click="removePart($event)">Remove </a>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered" id="machinePartList" style="font-size:14">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+                                        <input type="checkbox" class="checkbox" id="select_all" ng-click="checkAllCheckBoxForMachineCongiguration()"/>
+                                    </th>
+                                    <th class="text-center">Sr. No.</th>
+                                    <th class="text-center">Spare Part Name</th>
+                                    <th class="text-center">Life</th>
+                                    <th class="text-center">Counter Per Cycle</th>
+                                    <th class="text-center">Alert Gen. Count</th>
+                                    <th class="text-center">Provision of Life Extention</th>
+                                    <th class="text-center">Life Extention Limit</th>
+                                    <th class="text-center">Ext. Life Alert Count</th>
+                                    <th class="text-center" ng-hide="!id">Replace</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="part in machineParts.parts" >
+
+
+                                    <td class="text-center">
+                                        <input type="checkbox" class="checkbox" value="{{$index}}">
+                                    </td>
+                                    <td class="text-center">{{$index + 1}}</td>
+                                    <td class="text-center">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control spare_part_name  distinctnames" placeholder="Enter part name" ng-model="part.spare_part_name"  name="spare_part_name_{{$index}}" id="spare_part_name_{{$index}}"  required="">                                            
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-group">  
+                                            <input type="text" data-lifelimit="{{refresh_count * part.multiplying_factor}}" ng-disabled="machine_status == 'ON'" data-toggle='tooltip' title="{{machine_status == 'ON'?'To change this Turn OFF your machine.' : ''}}" mf="{{part.multiplying_factor}}" data-finallife="{{part.final_life}}" data-definedlife="{{part.life}}" class="form-control life" value=""  ng-model="part.life" onkeypress='return isNumberKey(event)' ng-change="updateCounts($index);" name="life_{{$index}}" id="life_{{$index}}"  required="">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control multiplying_factor" value="" onkeypress='return isNumberKey(event)' ng-model="part.multiplying_factor" ng-disabled="id" data-toggle='tooltip' title="{{id?'To change this reset your machine.' : ''}}" name="multiplying_factor_{{$index}}" id="multiplying_factor_{{$index}}" required="">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-group">                                    
+                                            <input type="text"  class="form-control"  ng-model="part.alert_gen_count" name="alert_gen_count_{{$index}}" id="alert_gen_count_{{$index}}"   disabled="">
+                                        </div>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="form-group">
+                                            <select class="form-control"   ng-model="part.provision_of_life_exten" ng-change="updateCounts($index)" ng-disabled="id" data-toggle='tooltip' title="{{id?'To change this reset your machine.' : ''}}" name="provision_of_life_exten_{{$index}}" id="provision_of_life_exten_{{$index}}" required="" >
+                                                <option value="Yes">Yes</option>
+                                                <option value="No">No</option>
+                                            </select>
+                                        </div>
+                                    </td> 
+                                    <td class="text-center" >
+                                        <input type="text" class="form-control"  ng-model="part.life_extn_limit" name="life_extn_limit_{{$index}}" id="life_extn_limit_{{$index}}"  disabled="">
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control"  ng-model="part.ext_life_alert_count" name="ext_life_alert_count_{{$index}}}" id="ext_life_alert_count_{{$index}}}" disabled="">
+                                    </td>
+                                    <td class="text-center" ng-hide="!id">
+                                        <button data-toggle='tooltip' onclick="return false" class='btn btn-success' ng-click="replaceEachPart($index)" title='Replace'>Replace</button>                            
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div> 
+            <div class="col-md-6">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Machine Settings:</h3>
+                        <div class="box-tools"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-12 ">
+                                <div class="form-group ">
+                                    <label for="alert_gen_per">Set Alert Generation Percentage(%):</label>
+                                    <input type="text" ng-model="machineParts.alert_gen_per" ng-change="updateCounts()" onkeypress='return isNumberKey(event)' ng-disabled="id" data-toggle='tooltip' title="{{id?'To change this reset your machine.' : ''}}" name="alert_gen_per" id="alert_gen_per" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="extn_limit_per">Set Percentage of Life Extention Limit(%):</label>
+                                    <input type="text" ng-model="machineParts.extn_limit_per" ng-change="updateCounts()" onkeypress='return isNumberKey(event)' ng-disabled="id" data-toggle='tooltip' title="{{id?'To change this reset your machine.' : ''}}" name="extn_limit_per" id="extn_limit_per" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="alert_extn_limit_per">Set Alert Generation Percentage for Extended Life(%):</label>
+                                    <input type="text" ng-model="machineParts.alert_extn_limit_per" ng-change="updateCounts()" onkeypress='return isNumberKey(event)' ng-disabled="id" data-toggle='tooltip' title="{{id?'To change this reset your machine.' : ''}}" name="alert_extn_limit_per" id="alert_extn_limit_per" class="form-control" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Email Settings:</h3>
+                        <div class="box-tools"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">                        
+                        <div class="row" ng-repeat="rec in machineParts.recipient">
+                            <div class="col-sm-12">
+                                <div class="form-group">                            
+                                    <input type="email" name="email_{{$index}}}" ng-change="hideErrorMessage()" ng-model="rec.email" placeholder="Please enter your Email_ID" id="email_{{$index}}}" class="form-control email distinctnames" >
+                                </div>
+                            </div>
+                        </div>  
+                        <div id="errrorMessage" class="hasError">
+
+                        </div>                  
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <!--<div class="row">-->
+            <div class="col-sm-12">
+                <!--{{ machineParts|json}}-->
+            </div>
+            <div class="col-sm-12 text-center">
+                <a href="/machine-list"  class="btn btn-success backBtn" >Back</a>
+                <button class="btn btn-success" type="submit" ng-click="submit($event)" >Save</button>
+            </div>
+            <!--</div>-->
+        </form>
+    </div>
+
+    <!-- /.box -->
+    <!-- Replace H/W modal -->
+    <div class="modal fade default-modal"  id="replaceHW-modal" role="dialog" ng-controller="addMachineCtrl">
+        <div class="modal-dialog " style="width: 30%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <center><h4 class="modal-title"><a href="#"><b>Replace H/W</b></a></h4></center>
+                </div>
+                <div class="modal-body" style="word-wrap: break-word;">
+                    <form method="post" id="replaceHW-form">
+                        <div id="oldIPSection" class="form-group has-feedback">
+                            <label for="oldIP">Old IP Address:</label>
+                            <input id="oldIP" name="oldIP" type="text" class="form-control" value="{{machineParts.dcd_linked_ip}}" placeholder="Old IP Address" disabled=""> 
+                        </div>
+                        <div id="newIPSection" class="form-group has-feedback">
+                            <label for="newIP">New IP Address:</label>
+                            <input id="newIP" name="newIP" type="text" class="form-control" value="" ng-model="new_dcd_linked_ip" placeholder="New IP Address" required="" autofocus=""> 
+                            <span class="glyphicon form-control-feedback"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-4" style="float: right;">
+                                <button ng-click="update_ip()" class="btn btn-primary btn-block btn-flat" >Save</button>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </form>    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+<script>
+// function checkLife(){
+//      $('.multiplying_factor').change(function(e){
+//        console.log("dfgdgdfgdfgdgfdfg");
+////       $('.life').trigger('blur');
+//    });
+// }
+
+            $(".multiplying_factor ").change(function () {
+                console.log("sdfjdhshd")
+
+                $ele = $(this).parents("td").prev("td").find("input");
+                var elename = $ele.attr("name");
+                $("#" + elename).valid();
+                console.log($ele.val())
+            })
+
+</script>
+<script>
+
+            $("[data-toggle=tab]").click(function (e) {
+                e.preventDefault();
+            })
+
+            var validateMulplyingFactor = function () {
+                $(".multiplying_factor").change(function () {
+
+                    $ele = $(this).parents("td").prev("td").find("input");
+                    var elename = $ele.attr("name");
+                    $("#" + elename).valid();
+                })
+            }
+
+
+            $.validator.addMethod('checkPercentile', function (value, el, param) {
+                return value <= param;
+            }, "The value must be less than equal to {0}");
+            $.validator.addMethod('checkLife', function (value, el, param) {
+                var life_limit = parseInt($(el).data('lifelimit'));
+                var final_life = parseInt($(el).data('finallife'));
+                var mf = parseInt($(el).attr('mf'));
+
+                if (isNaN(final_life))
+                    final_life = parseInt($(el).data('definedlife'));
+//                var defined_life = parseInt($(el).data('definedlife'));
+//                var multiple_cycle = parseInt($(el).data('multiplefactor'));
+
+                console.log("life_limit");
+                console.log(life_limit);
+                console.log("final_life");
+                console.log(final_life);
+
+                var num = 0;
+                if (final_life > value) {
+                    num = final_life;
+                } else {
+                    num = value;
+                }
+                if (isNaN(life_limit)) {
+                    return true;
+                } else {
+
+                    console.log("bingooo")
+                    console.log((num / mf) > life_limit)
+
+                    return (num / mf) > life_limit;
+                }
+            }, 'Life must be greater than current count.');
+            $.validator.addMethod('checkLifeCount', function (value, el, param) {
+                return value >= param;
+            }, "The value must be greater than equal to {0}");
+            $.validator.addMethod("notEqualToGroup", function (value, element, options) {
+                // get all the elements passed here with the same class
+                var elems = $(element).parents('form').find(options[0]);
+                // the value of the current element
+                var valueToCompare = angular.lowercase(value);
+                // count
+                var matchesFound = 0;
+                // loop each element and compare its value with the current value
+                // and increase the count every time we find one
+                jQuery.each(elems, function () {
+                    thisVal = angular.lowercase($(this).val());
+                    if (thisVal == valueToCompare) {
+                        matchesFound++;
+                    }
+                });
+                // count should be either 0 or 1 max
+                if (this.optional(element) || matchesFound <= 1) {
+                    //elems.removeClass('error');
+                    return true;
+                } else {
+                    //elems.addClass('error');
+                }
+            }, "Please enter a Unique Value.");
+            $.validator.addMethod('IP4Checker', function (value) {
+                var ip = /^(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])(\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[0-9]{2}|[0-9])){3}$/;
+                return value.match(ip);
+            }, 'Invalid IP address');
+            $.validator.addMethod("valueIsZero", function (value, element) {
+                return this.optional(element) || (parseInt(value) != 0);
+            }, "Invalid Input");
+            $.validator.addMethod("alphanumeric", function (value, element) {
+                return this.optional(element) || value == value.match(/^[a-zA-Z0-9\-\s]+$/);
+            }, "Invalid Input");
+            $.validator.addMethod("isValidEmailAddress", function (value, element) {
+                var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+                return pattern.test(value);
+            }, "Invalid Email Address");
+
+            var $createMachineForm = $('#createMachineForm');
+                    function validateForm() {
+                        $createMachineForm.validate({
+                            rules: {
+                                machine_name: {
+                                    required: true,
+                                },
+                                department: {
+                                    required: true,
+                                },
+                                alert_gen_per: {
+                                    required: true,
+                                    checkPercentile: 100
+                                },
+                                extn_limit_per: {
+                                    required: true,
+                                    checkPercentile: 100
+                                },
+                                alert_extn_limit_per: {
+                                    required: true,
+                                    checkPercentile: 100
+                                },
+                                dcd_linked_ip: {
+                                    required: true,
+                                    IP4Checker: true
+                                }
+                            },
+                        });
+                        $('#replaceHW-form').validate({
+                            rules: {
+                                newIP: {
+                                    required: true,
+                                    IP4Checker: true
+                                }
+                            },
+                        });
+                        $.validator.addClassRules(
+                                "spare_part_name", //your class name
+                                {required: true,
+                                    alphanumeric: true,
+                                    notEqualToGroup: ['.distinctnames']}
+                        );
+                        $.validator.addClassRules(
+                                "multiplying_factor", //your class name
+                                {valueIsZero: true,
+                                    required: true,
+                                    checkPercentile: 10}
+                        );
+//                        $.validator.addClassRules(
+//                                "life", //your class name
+//                                {checkLifeCount: 100,              
+//                                    required: true}
+//                        );
+                        $.validator.addClassRules(
+                                "email", //your class name
+                                {notEqualToGroup: ['.distinctnames'],
+                                    // isValidEmailAddress: true
+                                }
+                        );
+                        var qs = getQueryStrings();
+                        var projectID = qs["id"];
+                        if (projectID) {
+                            $.validator.addClassRules(
+                                    "life", //your class name
+                                    {checkLife: true,
+                                        required: true,
+                                        checkLifeCount: 100}
+                            );
+                        }
+                    }
+
+            function getQueryStrings() {
+                var assoc = {};
+                var decode = function (s) {
+                    return decodeURIComponent(s.replace(/\+/g, " "));
+                };
+                var queryString = location.search.substring(1);
+                var keyValues = queryString.split('&');
+                for (var i in keyValues) {
+                    var key = keyValues[i].split('=');
+                    if (key.length > 1) {
+                        assoc[decode(key[0])] = decode(key[1]);
+                    }
+                }
+
+                return assoc;
+            }
+
+            validateForm();</script>

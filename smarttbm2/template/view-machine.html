@@ -1,0 +1,206 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        View Machine
+        <small></small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="/machine-list"><i class="fa fa-dashboard"></i> Machine List</a></li>        
+        <li class="active">View Machine</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="cbox">
+     <!-- <div style="margin: 0px 15px 10px 0px; float:right;">
+        <div class="btn-group" id="reset_machine-div">
+            <button id="reset_machine" ng-click="resetMachine()" ng-disabled="machineParts.status=='ON' || machineParts.current_count == 0" ng-show="id" class="btn  btn-warning sm">Reset Machine</button>
+        </div> -->
+        <div class="text-right" style="margin: 0px 15px 10px 0px;">
+        <div class="btn-group alignBtn" id="reset_machine-div">
+            <button id="reset_machine" ng-click="resetMachine()" ng-disabled="machineParts.status=='ON' || machineParts.current_count == 0" ng-show="id" class="btn  btn-warning sm" data-toggle='tooltip' title='Reset Machine'>Reset Machine</button>
+        </div>
+        <!-- <div class="btn-group" id="off_on_machine-div">
+            <button id="off_on_machine" ng-model="status" ng-click="turnOffOrOntMachine()" ng-class="machineParts.status=='ON' ? 'btn btn-block btn-success sm' : 'btn btn-block btn-danger sm'" ng-show="id" >{{machineParts.status=="OFF" ? 'Turn On Machine' : 'Turn Off Machine'}}</button>
+        </div> -->
+        <div class="btn-group alignBtn" id="off_on_machine-div">
+            <button id="off_on_machine" ng-model="status" ng-click="turnOffOrOntMachine()" ng-class="machineParts.status=='ON' ? 'btn btn-block btn-success sm' : 'btn btn-block btn-danger sm'" ng-show="id" >{{machineParts.status=="OFF" ? 'Turn On Machine' : 'Turn Off Machine'}}</button>
+        </div>
+        <!-- <div class='col-sm-3'> 
+        <toggle-switch ng-model="switchStatus"><toggle-switch>
+        </div> -->
+        <!-- <div style="display:inline-block">
+            <label class="switch">
+                    <input type="checkbox">
+                    <div class="slider" style="margin-bottom: -18px;margin-top: 18px;"></div>
+            </label> 
+        </div>    
+        ng-class="{'red': inventory.productName == 'false', 'green': inventory.productName == 'true'}"
+          -->  
+        <!-- <label class="switch"  style="font-weight: inherit;">
+            <input type="checkbox"  ng-checked="machineParts.status=='ON'"> -->
+            <!--  ng-class="machineParts.status=='OFF' ? 'unChecked' : 'checked'" -->
+            <!-- <div class="slider round" ng-click="turnOffOrOntMachine()" style="margin-bottom: -18px; margin-top: 18px;">
+                <div id="on_Machine" style="margin-top: 7px; margin-left: 6px; color:#fff" >ON</div>
+                <div id="off_Machine" style="margin-left: 32px; margin-top: -20px; "  >OFF</div>
+            </div>
+        </label> -->
+        <!-- <toggle-switch ng-click="turnOffOrOntMachine()" ng-class="{'ON' : status, 'OFF': !status}><toggle-switch> -->
+        <!-- <toggle-switch ng-click="turnOffOrOntMachine($event)" ng-model="switchStatus"></toggle-switch> -->
+
+
+    </div>
+        <form action=""  >
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Machine Details</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="departments">Department:</label>
+                                    <input type="text" ng-model="machineParts.department" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="departments">Enter Machine Name:</label>
+                                    <input type="text" ng-model="machineParts.machine_name" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="dcd_linked_ip">IP(DCD):</label>
+                                    <input type="text" class="form-control" ng-model="machineParts.dcd_linked_ip" disabled>
+                                </div> 
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="current_count">Button Press Count:</label>
+                                    <input type="text" class="form-control" ng-model="machineParts.current_count" id="current_count" name="current_count" disabled="">
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div> 
+
+            <div class="col-md-12">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Spare Parts Details</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Sr. No.</th>
+                                    <th class="text-center">Spare Part Name</th>
+                                    <th class="text-center">Defined Life</th>
+                                    <th class="text-center">Counter Per Cycle</th>
+                                    <th class="text-center">Alert Gen. Count</th>
+                                    <th class="text-center">Alert trigger at</th>
+                                    <th class="text-center">Final Life</th>
+                                    <th class="text-center">Life exhausted till date</th>
+                                    <th class="text-center">Provision of life extention</th>
+                                    <th class="text-center">Life extention limit</th>
+                                    <th class="text-center">Ext. life alert count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="part in machineParts.parts">
+                                    <td class="text-center">{{$index+1}}</td>
+                                    <td class="text-center">{{part.spare_part_name}}</td>
+                                    <td class="text-center" >{{part.life}}</td>  
+                                    <td class="text-center">{{part.multiplying_factor}}</td>
+                                    <td class="text-center">{{part.alert_gen_count}}</td>
+                                    <td class="text-center">{{part.alert_at_count}}</td>
+                                    <td class="text-center" >{{part.final_life}}</td> 
+                                   <!--  <td class="text-center" ng-show="part.life_exhausted_till_date < part.final_life" ng-class="part.life_exhausted_till_date >= part.alert ? 'orange' : 'green'">{{part.life_exhausted_till_date}}</td> -->
+                                    <!-- <td class="text-center "  ng-class="part.life_exhausted_till_date >= part.final_life ? 'red' : 'green'">{{part.life_exhausted_till_date}}</td> -->
+                                    <td class="text-center "  ng-class="changeColor(part.life_exhausted_till_date,part.alert_at_count,part.multiplying_factor,part.final_life)"><b>{{part.life_exhausted_till_date}}</b></td>
+                                    <td class="text-center">{{part.provision_of_life_exten}}</td> 
+                                    <td class="text-center">{{part.life_exten_limit}}</td>
+                                    <td class="text-center">{{part.exten_life_alert_count}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                    <!-- {{machineParts.parts |json}} -->
+                </div>
+                <!-- /.box -->
+            </div> 
+            <div class="col-md-6">
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Machine settings</h3>
+                        <div class="box-tools"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td class="text-left">Set alert generation percentage</td> 
+                                    <td class="text-center" style="font-weight: bold;">{{machineParts.alert_gen_perc + ' ' +'%'}}</td>  
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Set percentage of life extention limit</td>
+                                    <td class="text-center" style="font-weight: bold;">{{machineParts.life_extesn_perc + ' ' +'%'}}</td>            
+                                </tr>
+                                <tr>
+                                    <td class="text-left">Set alert generation percentage for extended life</td>
+                                    <td class="text-center" style="font-weight: bold;">{{machineParts.alert_gen_perc_of_extens_life + ' ' +'%'}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-6">            
+                <div class="box box-solid">
+                    <div class="box-header with-border bg-gray">
+                        <h3 class="box-title">Email settings</h3>
+                        <div class="box-tools"></div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">  
+                    <table class="table table-bordered">
+                    <tbody>
+                        <tr ng-repeat="email in machineParts.emails" ng-show="machineParts.emails !== '' ">
+                            <td ng-show="email !== '' ">{{email}}</td>
+                        </tr>
+                        <tr ng-show="machineParts.emails.length == 0">
+                            <td> No email associated.<td>
+                        </tr>
+                    </tbody>        
+                    </table>                                    
+                    </div>                    
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-sm-12 text-center">
+                <a href="/machine-list"  class="btn btn-success">Back</a>
+                <a class="btn btn-success" href="/machine/update?id={{machineParts.id}}" >Edit</a>
+            </div>
+            <!--</div>-->
+        </form>
+    </div>
+    
+    <!-- /.box -->
+</section>
+<!-- /.content -->
+
+
